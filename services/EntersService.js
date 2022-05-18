@@ -31,7 +31,7 @@ class EntersService{
                     enters.push(
                         {
                             user:user.username,
-                            dates:[now],
+                            dates:enter.dates,
                             description:enter.description,
                             organization:user.description
                         }
