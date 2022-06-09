@@ -128,6 +128,17 @@ class AuthServices {
         }
     }
 
+    async removeUserByUserName(username){
+        try{
+            const res = await UserModel.findOneAndDelete({username})
+            return true
+            if(res)
+                return {warning:false, messageRu:'Описание добавлено'}
+        }
+        catch (e) {
+            return {warning:true, messageRu:'Ошибка базы данных при удалении'}
+        }
+    }
     async addDescription(userId, descriptionText){
         try{
             const res = await UserModel.findByIdAndUpdate(userId, {description:descriptionText})
