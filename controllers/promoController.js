@@ -7,7 +7,7 @@ class PromoController{
             const {user_data, code} = req.body
             if(!code){
                 await logService.addLog('addPromoController', `Нет данных: code:${code} userData:${user_data}`)
-                return {warning:true, message:'Не заполнено поле "code"'}
+                return res.json({warning:true, message:'Не заполнено поле "code"'})
             }
             const resPromo = await promoService.addPromo(code, user_data)
             if(resPromo){
@@ -18,6 +18,7 @@ class PromoController{
 
         }catch (e) {
             logService.addLog('PromoController.addPromo', e)
+            return  res.json({warning:true})
         }
     }
 }
