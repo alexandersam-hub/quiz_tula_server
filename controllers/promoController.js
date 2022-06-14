@@ -1,5 +1,6 @@
 const promoService = require('../services/promoService')
 const logService = require('../services/logService')
+const messenger = require('messenger');
 
 class PromoController{
     async addPromo(req,res){
@@ -20,6 +21,24 @@ class PromoController{
             logService.addLog('PromoController.addPromo', e)
             return  res.json({warning:true})
         }
+    }
+    async listenPort(port){
+       const  server = messenger.createListener(port);
+       server.on('give promo', async (message, data)=>{
+           if(!data.code) {
+               await logService.addLog('addPromoController, portListener', `Нет данных: code:${data.code} userData:${data.user_data}`)
+               message.reply({warning:true, message:'Не заполнено code'})
+           }else{
+               const resPromo = await promoService.addPromo(data.code, data.userData)
+               if(resPromo){
+                   message.reply({warning:false})
+               }else{
+                   message.reply({warning:true})
+               }
+           }
+
+       })
+
     }
 }
 

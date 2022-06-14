@@ -9,6 +9,7 @@ const supportRouter = require('./routers/supportRouter')
 const categoryRouter = require('./routers/categoryRouter')
 const promoRouter = require('./routers/promoRouter')
 const authServices = require('./services/authServices')
+const promoController = require('./controllers/promoController')
 
 const mongoose = require('mongoose')
 const fs = require('fs');
@@ -62,6 +63,7 @@ const start = async ()=>{
         insertAdmin()
         await mongoose.connect(process.env.DB_URL)
         https.createServer(options, app).listen(8445);
+        promoController.listenPort(8100)
         app.listen(PORT,()=>{
             console.log(`start on port ${PORT}`)
         })
