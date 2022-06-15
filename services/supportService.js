@@ -1,12 +1,15 @@
 const SupportModel = require('../models/SupportModel')
 const SupportDto = require('../dtos/SupportDto')
 const authService = require('./authServices')
+const telegramService = require('./TelegramSendService')
+
 class SupportService{
 
     async createNewPost(userId, username, mail, text, description=''){
         try{
 
             const res = await SupportModel.create({userId, username, mail, text, description, isSend:false})
+            telegramService.sendMessageToAdmin(`пользователь: ${username}, почта: ${mail}, текст: ${text}`)
             return {warning:false, data:{...new SupportDto(res)}}
         }
         catch (e) {

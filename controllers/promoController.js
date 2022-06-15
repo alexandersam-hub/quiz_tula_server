@@ -9,11 +9,10 @@ class PromoController{
     }
 
     onConnect(wsClient) {
-        console.log('Новый пользователь');
-        wsClient.send('Привет');
+        // console.log('Новый пользователь');
 
         wsClient.on('close', function() {
-            console.log('Пользователь отключился');
+            // console.log('Пользователь отключился');
         });
 
         wsClient.on('message', function(message) {
@@ -21,7 +20,7 @@ class PromoController{
                 const jsonMessage = JSON.parse(message);
                 switch (jsonMessage.action) {
                     case 'promoQuest':
-                        console.log(jsonMessage.data.code, jsonMessage.data.userData)
+                        // console.log(jsonMessage.data.code, jsonMessage.data.userData)
                         promoService.addPromo(jsonMessage.data.code, jsonMessage.data.userData)
                             break;
                     default:
