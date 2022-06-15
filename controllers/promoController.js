@@ -1,8 +1,38 @@
 const promoService = require('../services/promoService')
 const logService = require('../services/logService')
-const messenger = require('messenger');
+const WebSocket = require('ws');
 
 class PromoController{
+    constructor() {
+        const wsServer = new WebSocket.Server({ port: 8100 });
+        wsServer.on('connection', this.onConnect);
+    }
+
+    onConnect(wsClient) {
+        console.log('Новый пользователь');
+        wsClient.send('Привет');
+
+        wsClient.on('close', function() {
+            console.log('Пользователь отключился');
+        });
+
+        wsClient.on('message', function(message) {
+            try {
+                const jsonMessage = JSON.parse(message);
+                switch (jsonMessage.action) {
+                    case 'promoQuiz':
+                        promoService.addPromo(jsonMessage.data.code, jsonMessage.data.userData)
+                            break;
+                    default:
+                        console.log('Неизвестная команда');
+                        break;
+                }
+            } catch (error) {
+                console.log('Ошибка', error);
+            }
+        });
+    }
+
     async addPromo(req,res){
         try{
             const {user_data, code} = req.body
@@ -22,24 +52,23 @@ class PromoController{
             return  res.json({warning:true})
         }
     }
-    async listenPort(port){
-       const  server = messenger.createListener(port);
-       server.on('give promo', async (message, data)=>{
-           if(!data.code) {
-               await logService.addLog('addPromoController, portListener', `Нет данных: code:${data.code} userData:${data.user_data}`)
-               message.reply({warning:true, message:'Не заполнено code'})
-           }else{
-               const resPromo = await promoService.addPromo(data.code, data.userData)
-               if(resPromo){
-                   message.reply({warning:false})
-               }else{
-                   message.reply({warning:true})
-               }
-           }
-
-       })
-
-    }
+    // async listenPort(port){
+    //     client.send('promoQuest', async (message, data)=>{
+    //        if(!data.code) {
+    //            await logService.addLog('addPromoController, portListener', `Нет данных: code:${data.code} userData:${data.user_data}`)
+    //            message.reply({warning:true, message:'Не заполнено code'})
+    //        }else{
+    //            const resPromo = await promoService.addPromo(data.code, data.userData)
+    //            if(resPromo){
+    //                message.reply({warning:false})
+    //            }else{
+    //                message.reply({warning:true})
+    //            }
+    //        }
+    //
+    //    })
+    //
+    // }
 }
 
 module.exports = new PromoController()

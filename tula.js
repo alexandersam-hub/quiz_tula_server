@@ -63,7 +63,6 @@ const start = async ()=>{
         insertAdmin()
         await mongoose.connect(process.env.DB_URL)
         https.createServer(options, app).listen(8445);
-        promoController.listenPort(8100)
         app.listen(PORT,()=>{
             console.log(`start on port ${PORT}`)
         })
