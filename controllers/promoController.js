@@ -20,7 +20,7 @@ class PromoController{
             try {
                 const jsonMessage = JSON.parse(message);
                 switch (jsonMessage.action) {
-                    case 'promoQuiz':
+                    case 'promoQuest':
                         promoService.addPromo(jsonMessage.data.code, jsonMessage.data.userData)
                             break;
                     default:
