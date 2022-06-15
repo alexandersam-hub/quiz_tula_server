@@ -21,6 +21,7 @@ class PromoController{
                 const jsonMessage = JSON.parse(message);
                 switch (jsonMessage.action) {
                     case 'promoQuest':
+                        console.log(jsonMessage.data.code, jsonMessage.data.userData)
                         promoService.addPromo(jsonMessage.data.code, jsonMessage.data.userData)
                             break;
                     default:
