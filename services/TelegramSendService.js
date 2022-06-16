@@ -3,6 +3,7 @@ const request = require('request');
 class TelegramSendService{
     sendMessageToAdmin(data){
         try{
+            console.log(data)
             request.post(
                 'http://127.0.0.1:8005/api/message/send',
                 {data},
