@@ -5,6 +5,7 @@ class PromoController{
 
     async addPromo(req,res){
         try{
+            console.log(req.body.key)
             const {user_data, code} = req.body
             if(!code){
                 await logService.addLog('addPromoController', `Нет данных: code:${code} userData:${user_data}`)
