@@ -1,37 +1,7 @@
 const promoService = require('../services/promoService')
 const logService = require('../services/logService')
-const WebSocket = require('ws');
 
 class PromoController{
-    constructor() {
-        const wsServer = new WebSocket.Server({ port: 8100 });
-        wsServer.on('connection', this.onConnect);
-    }
-
-    onConnect(wsClient) {
-        // console.log('Новый пользователь');
-
-        wsClient.on('close', function() {
-            // console.log('Пользователь отключился');
-        });
-
-        wsClient.on('message', function(message) {
-            try {
-                const jsonMessage = JSON.parse(message);
-                switch (jsonMessage.action) {
-                    case 'promoQuest':
-                        // console.log(jsonMessage.data.code, jsonMessage.data.userData)
-                        promoService.addPromo(jsonMessage.data.code, jsonMessage.data.userData)
-                            break;
-                    default:
-                        console.log('Неизвестная команда');
-                        break;
-                }
-            } catch (error) {
-                console.log('Ошибка', error);
-            }
-        });
-    }
 
     async addPromo(req,res){
         try{

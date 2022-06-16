@@ -9,7 +9,6 @@ const supportRouter = require('./routers/supportRouter')
 const categoryRouter = require('./routers/categoryRouter')
 const promoRouter = require('./routers/promoRouter')
 const authServices = require('./services/authServices')
-const promoController = require('./controllers/promoController')
 
 const mongoose = require('mongoose')
 const fs = require('fs');
@@ -26,7 +25,7 @@ const options = {
 require('dotenv').config()
 
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8003
 const app = express()
 
 // app.use('/',(req,res)=>{
