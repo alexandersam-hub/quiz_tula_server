@@ -4,7 +4,7 @@ class TelegramSendService{
     sendMessageToAdmin(data){
         try{
             request.post(
-                'http://127.0.0.1:8010/api/message/send',
+                'http://127.0.0.1:8005/api/message/send',
                 {data},
                 function (error, response, body) {
                     if (!error && response.statusCode == 200) {
